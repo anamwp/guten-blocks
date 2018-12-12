@@ -70,6 +70,15 @@
 "use strict";
 
 
+__webpack_require__(1);
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var __ = wp.i18n.__; // Import __() from wp.i18n
 
 var registerBlockType = wp.blocks.registerBlockType; // Import registerBlockType() from wp.blocks
