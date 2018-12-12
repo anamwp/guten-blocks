@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'TX_CORE_ROOT', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 
-require_once TX_CORE_ROOT . '/inc/blocks.php';
+require_once TX_CORE_ROOT . '/inc/init.php';
 // require TX_CORE_ROOT . '/inc/custom-post-type/post-meta-field.php';
 
 // require_once TX_CORE_ROOT . '/inc/shortcode/social-share.php';
