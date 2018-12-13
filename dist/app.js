@@ -115,7 +115,7 @@ registerBlockType('cgb/block-single-block', {
     // Creates a <p class='wp-block-cgb-block-single-block'></p>.
     return React.createElement(
       'div',
-      { className: props.className },
+      { className: 'editor ' + props.className },
       React.createElement(
         'p',
         null,

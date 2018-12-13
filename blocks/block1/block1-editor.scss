@@ -1,8 +1,7 @@
 $primary: green;
 $secondary: tomato;
-h1{
-  color:$primary;
+.editor.wp-block-cgb-block-single-block{
   background:$secondary;
-  border:solid 1px $primary;
-  display:block;
+  color:white;
+  padding:50px 100px;
 }

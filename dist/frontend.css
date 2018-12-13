@@ -1,4 +1,4 @@
-h1 {
-  color: red;
+.wp-block-cgb-block-single-block {
   background: yellow;
-  border: solid 1px red; }
+  color: red;
+  padding: 50px 100px; }

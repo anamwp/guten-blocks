@@ -29,7 +29,7 @@
     edit: function( props ) {
       // Creates a <p class='wp-block-cgb-block-single-block'></p>.
       return (
-        <div className={ props.className }>
+        <div className={ 'editor ' + props.className }>
           <p>Hellow Gutenberg from TX</p>
         </div>
       );
