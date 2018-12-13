@@ -1,12 +1,13 @@
 var webpack = require ('webpack');
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var FileManagerPlugin = require('filemanager-webpack-plugin');
+
 module.exports = {
     entry: {
-        app:[
-            './src/main.js',
-            './src/main.scss',
-        ]
+        app:[ './src/main.js'],
+        frontend:['./src/frontend.scss'],
+        editor:['./src/editor.scss']
     },
     output:{
         path: path.resolve(__dirname, './dist'),
@@ -43,6 +44,19 @@ module.exports = {
         ]
     },
     plugins:[
-        new ExtractTextPlugin('[name].css')
+        new ExtractTextPlugin(
+            '[name].css'
+        ),
+
+        new FileManagerPlugin({
+            onEnd: [
+              {
+                delete: [
+                  './dist/frontend.js',
+                  './dist/editor.js'
+                ]
+              }
+            ]
+        })
     ]
 }

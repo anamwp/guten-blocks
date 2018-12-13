@@ -1,0 +1,8 @@
+$primary: green;
+$secondary: tomato;
+h1{
+  color:$primary;
+  background:$secondary;
+  border:solid 1px $primary;
+  display:block;
+}
