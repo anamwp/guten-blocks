@@ -14,15 +14,13 @@
    * @return {?WPBlock}          The block, if it has been successfully
    *                             registered; otherwise `undefined`.
    */
-  registerBlockType( 'cgb/block-single-block', {
+  registerBlockType( 'cgb/block-single-block2', {
     // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( 'TX Block', 'CGB' ), // Block title.
+    title: __( 'TX Block 2', 'CGB' ), // Block title.
     icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
     category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
     keywords: [
-      __( 'single-block — CGB Block' ),
-      __( 'CGB Example' ),
-      __( 'create-guten-block' ),
+      __( 'create-guten-block2' ),
     ],
 
     // The "edit" property must be a valid function.
@@ -30,7 +28,7 @@
       // Creates a <p class='wp-block-cgb-block-single-block'></p>.
       return (
         <div className={ 'editor ' + props.className }>
-          <p>Hellow Gutenberg from TX</p>
+          <p>This is block 2 in editor</p>
         </div>
       );
     },
@@ -39,7 +37,7 @@
     save: function( props ) {
       return (
         <div className={ props.className }>
-          <p>Hellow Gutenberg from TXx</p>
+          <p>this is block 2 in fronted</p>
         </div>
       );
     },

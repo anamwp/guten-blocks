@@ -1,1 +1,2 @@
-import './../blocks/block1/Block1';
+import './../blocks/alert/index';
+import './../blocks/block2/Block2';

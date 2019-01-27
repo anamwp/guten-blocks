@@ -2,6 +2,7 @@ var webpack = require ('webpack');
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var FileManagerPlugin = require('filemanager-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -24,16 +25,6 @@ module.exports = {
                     plugins: ['transform-runtime']
                 }
             },
-            // {
-            //     test: /\.less$/,
-            //     use: [{
-            //       loader: 'style-loader' // creates style nodes from JS strings
-            //     }, {
-            //       loader: 'css-loader' // translates CSS into CommonJS
-            //     }, {
-            //       loader: 'less-loader' // compiles Less to CSS
-            //     }]
-            // }
             {
                 test: /\.s[ac]ss$/,
                 use: ExtractTextPlugin.extract({
@@ -57,6 +48,11 @@ module.exports = {
                 ]
               }
             ]
-        })
+        }),
+        new CopyWebpackPlugin([
+            {from:'node_modules/uikit/dist/css/uikit.min.css',to:'../dist/resources/css'},
+            {from:'node_modules/uikit/dist/js/uikit.min.js',to:'../dist/resources/js'}
+        ])
+
     ]
 }
