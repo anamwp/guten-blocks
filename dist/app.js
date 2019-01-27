@@ -231,6 +231,8 @@ var __ = wp.i18n.__; // Import __() from wp.i18n
 
 var registerBlockType = wp.blocks.registerBlockType; // Import registerBlockType() from wp.blocks
 
+var URLInputButton = wp.editor.URLInputButton; // Import registerBlockType() from wp.blocks
+
 /**
  * Register: aa Gutenberg Block.
  *
@@ -244,36 +246,51 @@ var registerBlockType = wp.blocks.registerBlockType; // Import registerBlockType
  *                             registered; otherwise `undefined`.
  */
 
-registerBlockType('cgb/block-single-block2', {
+registerBlockType('tx/button', {
   // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-  title: __('TX Block 2', 'CGB'), // Block title.
+  title: __('button', 'tx'), // Block title.
   icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-  category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
-  keywords: [__('create-guten-block2')],
-
-  // The "edit" property must be a valid function.
-  edit: function edit(props) {
-    // Creates a <p class='wp-block-cgb-block-single-block'></p>.
-    return React.createElement(
-      'div',
-      { className: 'editor ' + props.className },
-      React.createElement(
-        'p',
-        null,
-        'This is block 2 in editor'
-      )
-    );
+  category: 'tx', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+  keywords: [__('button', 'tx')],
+  attributes: {
+    url: {
+      type: 'string',
+      default: 'google.com'
+    },
+    text: {
+      type: 'string',
+      default: __('Hellow')
+    }
   },
 
+  // The "edit" property must be a valid function.
+  edit: function edit(_ref) {
+    var className = _ref.className,
+        attributes = _ref.attributes,
+        setAttributes = _ref.setAttributes;
+
+    // Creates a <p class='wp-block-cgb-block-single-block'></p>.
+    console.log({ attributes: attributes, setAttributes: setAttributes });
+    return React.createElement(URLInputButton, {
+      url: attributes.url,
+      onChange: function onChange(url, post) {
+        return setAttributes({ url: url, text: post && post.title || 'Click here' });
+      }
+    });
+  },
+
+
   // The "save" property must be specified and must be a valid function.
-  save: function save(props) {
+  save: function save(_ref2) {
+    var attributes = _ref2.attributes;
+
     return React.createElement(
       'div',
-      { className: props.className },
+      null,
       React.createElement(
-        'p',
-        null,
-        'this is block 2 in fronted'
+        'a',
+        { href: attributes.url },
+        attributes.text
       )
     );
   }
