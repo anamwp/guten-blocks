@@ -1,7 +1,12 @@
 
   const { __ } = wp.i18n; // Import __() from wp.i18n
   const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-  const { URLInputButton } = wp.editor; // Import registerBlockType() from wp.blocks
+  const { Fragment } = wp.element;
+
+  const { Button } = wp.components;
+  const { withState } = wp.compose;
+
+
 
   /**
    * Register: aa Gutenberg Block.
@@ -16,10 +21,9 @@
    *                             registered; otherwise `undefined`.
    */
   registerBlockType( 'tx/button', {
-    // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-    title: __( 'button', 'tx' ), // Block title.
+    title: __( 'button', 'tx' ),
     icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-    category: 'tx', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+    category: 'tx',
     keywords: [
       __( 'button', 'tx' ),
     ],
@@ -33,18 +37,27 @@
         default:__('Hellow')
       },
     },
-
-    // The "edit" property must be a valid function.
-    edit( { className, attributes, setAttributes } ) {
-      // Creates a <p class='wp-block-cgb-block-single-block'></p>.
-      console.log({attributes, setAttributes});
-      return (
-      <URLInputButton
-				url={ attributes.url }
-				onChange={ ( url, post ) => setAttributes( { url, text: (post && post.title) || 'Click here' } ) }
-			/>
-      );
+    supports:{
+      align: true,
+      anchor:true,
+      customClassName: true,
+      className:true,
+      html: false,
+      // inserter:false,
+      // multiple:false,
+      // reusable:false,
     },
+
+      edit( props ) {
+      // edit( { className, attributes, setAttributes } ) {
+        // Creates a <p class='wp-block-cgb-block-single-block'></p>.
+        console.log(props);
+        return (
+          <Fragment>
+              <p>Hellow button</p>
+          </Fragment>
+        );
+      },
 
     // The "save" property must be specified and must be a valid function.
     save( { attributes } ) {

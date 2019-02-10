@@ -231,7 +231,9 @@ var __ = wp.i18n.__; // Import __() from wp.i18n
 
 var registerBlockType = wp.blocks.registerBlockType; // Import registerBlockType() from wp.blocks
 
-var URLInputButton = wp.editor.URLInputButton; // Import registerBlockType() from wp.blocks
+var Fragment = wp.element.Fragment;
+var Button = wp.components.Button;
+var withState = wp.compose.withState;
 
 /**
  * Register: aa Gutenberg Block.
@@ -247,10 +249,9 @@ var URLInputButton = wp.editor.URLInputButton; // Import registerBlockType() fro
  */
 
 registerBlockType('tx/button', {
-  // Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-  title: __('button', 'tx'), // Block title.
+  title: __('button', 'tx'),
   icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-  category: 'tx', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+  category: 'tx',
   keywords: [__('button', 'tx')],
   attributes: {
     url: {
@@ -262,27 +263,36 @@ registerBlockType('tx/button', {
       default: __('Hellow')
     }
   },
+  supports: {
+    align: true,
+    anchor: true,
+    customClassName: true,
+    className: true,
+    html: false
+    // inserter:false,
+    // multiple:false,
+    // reusable:false,
+  },
 
-  // The "edit" property must be a valid function.
-  edit: function edit(_ref) {
-    var className = _ref.className,
-        attributes = _ref.attributes,
-        setAttributes = _ref.setAttributes;
-
+  edit: function edit(props) {
+    // edit( { className, attributes, setAttributes } ) {
     // Creates a <p class='wp-block-cgb-block-single-block'></p>.
-    console.log({ attributes: attributes, setAttributes: setAttributes });
-    return React.createElement(URLInputButton, {
-      url: attributes.url,
-      onChange: function onChange(url, post) {
-        return setAttributes({ url: url, text: post && post.title || 'Click here' });
-      }
-    });
+    console.log(props);
+    return React.createElement(
+      Fragment,
+      null,
+      React.createElement(
+        'p',
+        null,
+        'Hellow button'
+      )
+    );
   },
 
 
   // The "save" property must be specified and must be a valid function.
-  save: function save(_ref2) {
-    var attributes = _ref2.attributes;
+  save: function save(_ref) {
+    var attributes = _ref.attributes;
 
     return React.createElement(
       'div',
