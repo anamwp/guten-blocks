@@ -32,5 +32,8 @@
     "style-loader": "^0.23.1",
     "uikit": "^3.0.2",
     "webpack": "^3.10.0"
+  },
+  "resolutions": {
+    "ajv": "6.8.1"
   }
 }
