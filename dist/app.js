@@ -231,10 +231,34 @@ var __ = wp.i18n.__; // Import __() from wp.i18n
 
 var registerBlockType = wp.blocks.registerBlockType; // Import registerBlockType() from wp.blocks
 
+var _wp$editor = wp.editor,
+    PlainText = _wp$editor.PlainText,
+    InspectorControls = _wp$editor.InspectorControls;
+var _wp$components = wp.components,
+    PanelBody = _wp$components.PanelBody,
+    Button = _wp$components.Button,
+    TextControl = _wp$components.TextControl,
+    ColorPalette = _wp$components.ColorPalette;
 var Fragment = wp.element.Fragment;
-var Button = wp.components.Button;
 var withState = wp.compose.withState;
 
+
+var MyColorPalette = withState({
+  color: '#f00'
+})(function (_ref) {
+  var color = _ref.color,
+      setState = _ref.setState;
+
+  var colors = [{ name: 'red', color: '#f00' }, { name: 'white', color: '#fff' }, { name: 'blue', color: '#00f' }];
+
+  return React.createElement(ColorPalette, {
+    colors: colors,
+    value: color,
+    onChange: function onChange(color) {
+      return setState({ color: color });
+    }
+  });
+});
 /**
  * Register: aa Gutenberg Block.
  *
@@ -247,7 +271,6 @@ var withState = wp.compose.withState;
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-
 registerBlockType('tx/button', {
   title: __('button', 'tx'),
   icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
@@ -261,6 +284,10 @@ registerBlockType('tx/button', {
     text: {
       type: 'string',
       default: __('Hellow')
+    },
+    content: {
+      type: 'string',
+      default: __('Click Me', 'tx')
     }
   },
   supports: {
@@ -274,33 +301,69 @@ registerBlockType('tx/button', {
     // reusable:false,
   },
 
-  edit: function edit(props) {
-    // edit( { className, attributes, setAttributes } ) {
-    // Creates a <p class='wp-block-cgb-block-single-block'></p>.
-    console.log(props);
+  edit: function edit(_ref2) {
+    var className = _ref2.className,
+        attributes = _ref2.attributes,
+        setAttributes = _ref2.setAttributes,
+        isSelected = _ref2.isSelected;
+    var content = attributes.content,
+        url = attributes.url;
+
     return React.createElement(
       Fragment,
       null,
       React.createElement(
-        'p',
+        InspectorControls,
         null,
-        'Hellow button'
+        React.createElement(
+          PanelBody,
+          {
+            title: __('Options', 'tx'),
+            initialOpen: true },
+          React.createElement(TextControl, {
+            label: 'Link',
+            value: className,
+            onChange: function onChange(url) {
+              return setState({ url: url });
+            }
+          }),
+          React.createElement(MyColorPalette, null)
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'editor-panel' },
+        React.createElement(
+          Button,
+          { className: 'g-button', isDefault: true },
+          isSelected ? React.createElement(TextControl, {
+            className: className,
+            value: content,
+            onChange: function onChange(content) {
+              return setAttributes({ content: content });
+            }
+          }) : content
+        )
       )
     );
   },
 
 
   // The "save" property must be specified and must be a valid function.
-  save: function save(_ref) {
-    var attributes = _ref.attributes;
+  save: function save(_ref3) {
+    var attributes = _ref3.attributes;
+
+    console.log('save', attributes);
+    var content = attributes.content,
+        url = attributes.url;
 
     return React.createElement(
       'div',
       null,
       React.createElement(
         'a',
-        { href: attributes.url },
-        attributes.text
+        { href: url },
+        content
       )
     );
   }

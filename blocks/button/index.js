@@ -1,13 +1,27 @@
-
   const { __ } = wp.i18n; // Import __() from wp.i18n
   const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+  const { PlainText, InspectorControls } = wp.editor;
+  const {PanelBody, Button , TextControl, ColorPalette} = wp.components;
   const { Fragment } = wp.element;
+  const {withState} = wp.compose;
 
-  const { Button } = wp.components;
-  const { withState } = wp.compose;
+  const MyColorPalette = withState( {
+    color: '#f00',
+  } )( ( { color, setState } ) => {
+    const colors = [
+      { name: 'red', color: '#f00' },
+      { name: 'white', color: '#fff' },
+      { name: 'blue', color: '#00f' },
+    ];
 
-
-
+    return (
+      <ColorPalette
+        colors={ colors }
+        value={ color }
+        onChange={ ( color ) => setState( { color } ) }
+      />
+    )
+  } );
   /**
    * Register: aa Gutenberg Block.
    *
@@ -36,6 +50,10 @@
         type: 'string',
         default:__('Hellow')
       },
+      content: {
+        type: 'string',
+        default:__('Click Me', 'tx')
+      }
     },
     supports:{
       align: true,
@@ -48,24 +66,51 @@
       // reusable:false,
     },
 
-      edit( props ) {
-      // edit( { className, attributes, setAttributes } ) {
-        // Creates a <p class='wp-block-cgb-block-single-block'></p>.
-        console.log(props);
-        return (
-          <Fragment>
-              <p>Hellow button</p>
-          </Fragment>
-        );
-      },
+    edit( { className, attributes, setAttributes, isSelected } ) {
+      const {content, url } = attributes;
+      return (
+        <Fragment>
+            <InspectorControls>
+              <PanelBody
+                title={__('Options', 'tx')}
+                initialOpen={ true }>
+                <TextControl
+                  label="Link"
+                  value={ className }
+                  onChange={ ( url ) => setState( { url } ) }
+                />
+                <MyColorPalette/>
+              </PanelBody>
+            </InspectorControls>
+
+          <div className="editor-panel">
+            <Button className="g-button" isDefault>
+              {
+                isSelected
+                ?
+                <TextControl
+                  className={ className }
+                  value={ content }
+                  onChange={ ( content ) => setAttributes( { content } ) }
+                />
+                : content
+              }
+            </Button>
+          </div>
+        </Fragment>
+      );
+    },
 
     // The "save" property must be specified and must be a valid function.
     save( { attributes } ) {
+      console.log('save', attributes);
+      const {content, url } = attributes;
       return (
         <div>
-          <a href={ attributes.url }>{ attributes.text }</a>
+          <a href={url}>{content}</a>
         </div>
       );
-    },
+    }
+
   } );
 
