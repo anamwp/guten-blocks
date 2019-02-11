@@ -227,6 +227,8 @@ var TYPES = exports.TYPES = [
 "use strict";
 
 
+var _helper = __webpack_require__(14);
+
 var __ = wp.i18n.__; // Import __() from wp.i18n
 
 var registerBlockType = wp.blocks.registerBlockType; // Import registerBlockType() from wp.blocks
@@ -238,27 +240,12 @@ var _wp$components = wp.components,
     PanelBody = _wp$components.PanelBody,
     Button = _wp$components.Button,
     TextControl = _wp$components.TextControl,
-    ColorPalette = _wp$components.ColorPalette;
-var Fragment = wp.element.Fragment;
+    ColorPalette = _wp$components.ColorPalette,
+    SelectControl = _wp$components.SelectControl;
 var withState = wp.compose.withState;
+var Fragment = wp.element.Fragment;
 
 
-var MyColorPalette = withState({
-  color: '#f00'
-})(function (_ref) {
-  var color = _ref.color,
-      setState = _ref.setState;
-
-  var colors = [{ name: 'red', color: '#f00' }, { name: 'white', color: '#fff' }, { name: 'blue', color: '#00f' }];
-
-  return React.createElement(ColorPalette, {
-    colors: colors,
-    value: color,
-    onChange: function onChange(color) {
-      return setState({ color: color });
-    }
-  });
-});
 /**
  * Register: aa Gutenberg Block.
  *
@@ -277,6 +264,14 @@ registerBlockType('tx/button', {
   category: 'tx',
   keywords: [__('button', 'tx')],
   attributes: {
+    type: {
+      type: 'string',
+      default: 'default'
+    },
+    size: {
+      type: 'string',
+      default: 'small'
+    },
     url: {
       type: 'string',
       default: 'google.com'
@@ -301,13 +296,15 @@ registerBlockType('tx/button', {
     // reusable:false,
   },
 
-  edit: function edit(_ref2) {
-    var className = _ref2.className,
-        attributes = _ref2.attributes,
-        setAttributes = _ref2.setAttributes,
-        isSelected = _ref2.isSelected;
+  edit: function edit(_ref) {
+    var className = _ref.className,
+        attributes = _ref.attributes,
+        setAttributes = _ref.setAttributes,
+        isSelected = _ref.isSelected;
     var content = attributes.content,
-        url = attributes.url;
+        url = attributes.url,
+        type = attributes.type,
+        size = attributes.size;
 
     return React.createElement(
       Fragment,
@@ -322,22 +319,36 @@ registerBlockType('tx/button', {
             initialOpen: true },
           React.createElement(TextControl, {
             label: 'Link',
-            value: className,
+            value: url,
             onChange: function onChange(url) {
-              return setState({ url: url });
+              return setAttributes({ url: url });
             }
           }),
-          React.createElement(MyColorPalette, null)
+          React.createElement(SelectControl, {
+            label: 'Type',
+            value: type,
+            options: _helper.TYPES,
+            onChange: function onChange(type) {
+              setAttributes({ type: type });
+            }
+          }),
+          React.createElement(SelectControl, {
+            label: 'Size',
+            value: size,
+            options: _helper.SIZE,
+            onChange: function onChange(size) {
+              setAttributes({ size: size });
+            }
+          })
         )
       ),
       React.createElement(
         'div',
         { className: 'editor-panel' },
         React.createElement(
-          Button,
-          { className: 'g-button', isDefault: true },
+          'button',
+          { className: className + ' uk-button uk-button-' + type + ' uk-button-' + size },
           isSelected ? React.createElement(TextControl, {
-            className: className,
             value: content,
             onChange: function onChange(content) {
               return setAttributes({ content: content });
@@ -350,24 +361,77 @@ registerBlockType('tx/button', {
 
 
   // The "save" property must be specified and must be a valid function.
-  save: function save(_ref3) {
-    var attributes = _ref3.attributes;
+  save: function save(_ref2) {
+    var attributes = _ref2.attributes;
 
     console.log('save', attributes);
     var content = attributes.content,
-        url = attributes.url;
+        url = attributes.url,
+        type = attributes.type,
+        size = attributes.size;
 
     return React.createElement(
       'div',
       null,
       React.createElement(
         'a',
-        { href: url },
+        { className: 'uk-button uk-button-' + type + ' uk-button-' + size, href: url },
         content
       )
     );
   }
 });
+
+/***/ }),
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var __ = wp.i18n.__; // Import __() from wp.i18n
+
+var TYPES = exports.TYPES = [
+// Mark style as default.
+{
+    value: 'default',
+    label: __('Default')
+}, {
+    value: 'primary',
+    label: __('Primary')
+}, {
+    value: 'secondary',
+    label: __('Secondary')
+}, {
+    value: 'danger',
+    label: __('Danger')
+}, {
+    value: 'text',
+    label: __('Text')
+}, {
+    value: 'link',
+    label: __('Link')
+}];
+
+var SIZE = exports.SIZE = [{
+    value: 'small',
+    label: __('Small')
+}, {
+    value: 'large',
+    label: __('Large')
+}];
 
 /***/ })
 /******/ ]);

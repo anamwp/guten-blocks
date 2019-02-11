@@ -1,27 +1,12 @@
   const { __ } = wp.i18n; // Import __() from wp.i18n
   const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
   const { PlainText, InspectorControls } = wp.editor;
-  const {PanelBody, Button , TextControl, ColorPalette} = wp.components;
-  const { Fragment } = wp.element;
+  const {PanelBody, Button , TextControl, ColorPalette, SelectControl} = wp.components;
   const {withState} = wp.compose;
+  const { Fragment } = wp.element;
 
-  const MyColorPalette = withState( {
-    color: '#f00',
-  } )( ( { color, setState } ) => {
-    const colors = [
-      { name: 'red', color: '#f00' },
-      { name: 'white', color: '#fff' },
-      { name: 'blue', color: '#00f' },
-    ];
+  import {TYPES, SIZE} from './helper'
 
-    return (
-      <ColorPalette
-        colors={ colors }
-        value={ color }
-        onChange={ ( color ) => setState( { color } ) }
-      />
-    )
-  } );
   /**
    * Register: aa Gutenberg Block.
    *
@@ -42,6 +27,14 @@
       __( 'button', 'tx' ),
     ],
     attributes: {
+      type: {
+        type: 'string',
+        default:'default'
+      },
+      size: {
+        type: 'string',
+        default:'small'
+      },
       url: {
         type: 'string',
         default:'google.com'
@@ -67,35 +60,47 @@
     },
 
     edit( { className, attributes, setAttributes, isSelected } ) {
-      const {content, url } = attributes;
+      const {content, url, type, size } = attributes;
       return (
         <Fragment>
             <InspectorControls>
+
               <PanelBody
                 title={__('Options', 'tx')}
                 initialOpen={ true }>
                 <TextControl
                   label="Link"
-                  value={ className }
-                  onChange={ ( url ) => setState( { url } ) }
+                  value={ url }
+                  onChange={ ( url ) => setAttributes( { url } ) }
                 />
-                <MyColorPalette/>
+                <SelectControl
+                    label="Type"
+                    value={ type }
+                    options={ TYPES }
+                    onChange={  type  => { setAttributes( { type } ) } }
+                />
+                <SelectControl
+                    label="Size"
+                    value={ size }
+                    options={ SIZE }
+                    onChange={  size  => { setAttributes( { size } ) } }
+                />
               </PanelBody>
+
             </InspectorControls>
 
           <div className="editor-panel">
-            <Button className="g-button" isDefault>
+            <button className={`${className} uk-button uk-button-${type} uk-button-${size}` } >
               {
                 isSelected
                 ?
                 <TextControl
-                  className={ className }
                   value={ content }
                   onChange={ ( content ) => setAttributes( { content } ) }
                 />
                 : content
               }
-            </Button>
+            </button>
           </div>
         </Fragment>
       );
@@ -104,10 +109,10 @@
     // The "save" property must be specified and must be a valid function.
     save( { attributes } ) {
       console.log('save', attributes);
-      const {content, url } = attributes;
+      const {content, url, type, size } = attributes;
       return (
         <div>
-          <a href={url}>{content}</a>
+          <a className={`uk-button uk-button-${type} uk-button-${size}`} href={url}>{content}</a>
         </div>
       );
     }
