@@ -227,7 +227,7 @@ var TYPES = exports.TYPES = [
 "use strict";
 
 
-var _helper = __webpack_require__(14);
+var _helper = __webpack_require__(5);
 
 var __ = wp.i18n.__; // Import __() from wp.i18n
 
@@ -383,16 +383,7 @@ registerBlockType('tx/button', {
 });
 
 /***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

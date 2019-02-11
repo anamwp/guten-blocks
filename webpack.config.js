@@ -1,5 +1,6 @@
 var webpack = require ('webpack');
 var path = require('path');
+var inProduction = (process.env.NODE_ENV === 'production');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var FileManagerPlugin = require('filemanager-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -55,4 +56,10 @@ module.exports = {
         ])
 
     ]
+}
+
+if(inProduction){
+    module.exports.plugins.push(
+        new webpack.optimize.UglifyJsPlugin()
+    );
 }
