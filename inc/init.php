@@ -4,9 +4,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+/**
+ * Load the javascript and stylesheet
+ * That is depends on shortcode or metabox
+ */
+// if(! function_exists('tx_plugin_js')){
+// 	function tx_plugin_js() {
+// 		// Load style sheets
+// 		wp_enqueue_style('bootstrap', get_template_directory_uri() . '/dist/css/bootstrap.css');
+// 		//Load JavaScripts
+// 		wp_enqueue_script('bootstrap', get_template_directory_uri() . '/dist/js/bootstrap.js', array('jquery'), '', true);
+// 	}
+// }
+// add_action( 'wp_enqueue_scripts', 'tx_plugin_js');
+
+
 /**
  * Enqueue Gutenberg block assets for both frontend + backend.
- *
  * @uses {wp-editor} for WP editor styles.
  * @since 1.0.0
  */
@@ -32,7 +47,6 @@ function tx_block_assets() {
 	);
 
 }
-
 // Hook: Frontend assets.
 add_action( 'enqueue_block_assets', 'tx_block_assets' );
 

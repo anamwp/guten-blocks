@@ -1,5 +1,6 @@
 var webpack = require ('webpack');
 var path = require('path');
+var PRODUCTION = process.env.NODE_ENV === "production";
 var inProduction = (process.env.NODE_ENV === 'production');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var FileManagerPlugin = require('filemanager-webpack-plugin');
@@ -53,8 +54,10 @@ module.exports = {
         new CopyWebpackPlugin([
             {from:'node_modules/uikit/dist/css/uikit.min.css',to:'../dist/resources/css'},
             {from:'node_modules/uikit/dist/js/uikit.min.js',to:'../dist/resources/js'}
-        ])
-
+        ]),
+        new webpack.DefinePlugin({
+            "process.env.PRODUCTION": JSON.stringify(PRODUCTION)
+        }),
     ]
 }
 
